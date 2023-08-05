@@ -5,6 +5,7 @@ import '../size_config.dart';
 import '../theme.dart';
 
 import 'package:intl/intl.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class _MyHomePageState extends State<MyHomePage> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+
+  List<PendingNotificationRequest> _selectedNotifications = [];
 
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
