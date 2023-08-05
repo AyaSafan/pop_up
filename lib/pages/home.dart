@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
               onPressed:(){
                 //showAddBottomSheet(context);
+                Navigator.pushNamed(context, '/add_notification');
               },
               icon: const Icon(
                   Icons.add,

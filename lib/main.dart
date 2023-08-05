@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pop_up/pages/add-notification.dart';
 import 'package:pop_up/pages/home.dart';
 
 void main() {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home': (context) => MyHomePage(),
+        '/add_notification': (context) => AddNotificationPage(),
       },
     );
   }
