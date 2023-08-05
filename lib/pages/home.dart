@@ -4,6 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../size_config.dart';
 import '../theme.dart';
 
+import 'package:intl/intl.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -11,9 +12,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _focusedDay = focusedDay;
+        _selectedDay = selectedDay;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,41 +57,73 @@ class _MyHomePageState extends State<MyHomePage> {
           color: MyColors.black26,
         ),
       ),
-      body: TableCalendar(
-        startingDayOfWeek: StartingDayOfWeek.sunday,
-        firstDay: DateTime(2023, 1, 1),
-        lastDay: DateTime(2073, 1, 1),
-        focusedDay: _focusedDay,
-        calendarFormat: _calendarFormat,
-        selectedDayPredicate: (day) {
-          // Use `selectedDayPredicate` to determine which day is currently selected.
-          // If this returns true, then `day` will be marked as selected.
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(getProportionateScreenWidth(15),getProportionateScreenHeight(8),
+                getProportionateScreenWidth(15),getProportionateScreenHeight(25)),
+            decoration:  BoxDecoration(
+              color: MyColors.lilac ,
+              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(25)),
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 3.0,
+                  color: Colors.grey.shade400,
+                  offset: const Offset(0, 2),
+                ),
+              ],
 
-          // Using `isSameDay` is recommended to disregard
-          // the time-part of compared DateTime objects.
-          return isSameDay(_selectedDay, day);
-        },
-        onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(_selectedDay, selectedDay)) {
-            // Call `setState()` when updating the selected day
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
-          }
-        },
-        onFormatChanged: (format) {
-          if (_calendarFormat != format) {
-            // Call `setState()` when updating calendar format
-            setState(() {
-              _calendarFormat = format;
-            });
-          }
-        },
-        onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
-          _focusedDay = focusedDay;
-        },
+            ),
+            child: TableCalendar(
+              startingDayOfWeek: StartingDayOfWeek.sunday,
+              firstDay: DateTime(2021, 1, 1),
+              lastDay: DateTime(2071, 1, 1),
+              focusedDay: _focusedDay,
+              calendarFormat: _calendarFormat,
+              headerStyle: const HeaderStyle(
+                leftChevronPadding:  EdgeInsets.all(0),
+                rightChevronPadding:  EdgeInsets.all(0),
+                headerPadding: EdgeInsets.fromLTRB(0,0,0,16),
+              ),
+              availableCalendarFormats: const {
+                CalendarFormat.month: 'Month',
+                CalendarFormat.week: 'Week'
+              },
+              daysOfWeekStyle: DaysOfWeekStyle(
+                dowTextFormatter: (date, locale) {
+                  return DateFormat.E(locale)
+                      .format(date)
+                      .substring(0, 2);
+                  //.toUpperCase();
+                },
+              ),
+              daysOfWeekHeight: 18,
+              calendarStyle: CalendarStyle(
+                selectedDecoration: const BoxDecoration(
+                    color: Colors.deepPurple, shape: BoxShape.circle),
+                todayDecoration: BoxDecoration(
+                    color: Colors.deepPurple.withOpacity(0.5),
+                    shape: BoxShape.circle),
+              ),
+
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: _onDaySelected,
+              onFormatChanged: (format) {
+                if (_calendarFormat != format) {
+                  setState(() {
+                    _calendarFormat = format;
+                  });
+                }
+              },
+              onPageChanged: (focusedDay) {
+                // No need to call `setState()` here
+                _focusedDay = focusedDay;
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
