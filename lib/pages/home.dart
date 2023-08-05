@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../size_config.dart';
+import '../theme.dart';
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -14,9 +17,34 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    // You have to call it on your starting screen
+    SizeConfig().init(context);
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('TableCalendar - Basics'),
+        toolbarHeight: 80,
+        centerTitle: true,
+        title: const Text('CALENDER', style: TextStyle(fontWeight: FontWeight.bold, color: MyColors.black26, fontSize: 16),),
+        actions: [
+          IconButton(
+              onPressed:(){
+                //showAddBottomSheet(context);
+              },
+              icon: const Icon(
+                  Icons.add,
+                  color: MyColors.black26,
+                  size: 24
+              )
+          ),
+          const SizedBox(width: 8,)
+        ],
+        elevation: 0.0,
+        backgroundColor: MyColors.lilac,
+        iconTheme: const IconThemeData(
+          color: MyColors.black26,
+        ),
       ),
       body: TableCalendar(
         startingDayOfWeek: StartingDayOfWeek.sunday,
