@@ -51,9 +51,6 @@ Future<void> onceNotification(
       UILocalNotificationDateInterpretation.absoluteTime
   );
 
-  print('pushed Notification');
-  _checkPendingNotificationRequests();
-
 }
 
 Future<void> dailyNotification(
@@ -85,8 +82,6 @@ Future<void> dailyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time
   );
-  print('pushed Notification');
-  _checkPendingNotificationRequests();
 
 }
 
@@ -120,9 +115,6 @@ Future<void> weeklyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
   );
-  print('pushed Notification');
-  _checkPendingNotificationRequests();
-
 
 }
 
@@ -155,8 +147,6 @@ Future<void> yearlyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dateAndTime
   );
-  print('pushed Notification');
-  _checkPendingNotificationRequests();
 
 }
 
@@ -165,11 +155,3 @@ Future<void> cancelNotification(int id) async {
   await flutterLocalNotificationsPlugin.cancel(id);
 }
 
-Future<void> _checkPendingNotificationRequests() async {
-  final List<PendingNotificationRequest> pendingNotificationRequests =
-  await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-  for (final request  in pendingNotificationRequests) {
-    print(request.title);
-    print(request.payload);
-  }
-}
