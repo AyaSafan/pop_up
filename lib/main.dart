@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pop_up/pages/add-notification.dart';
 import 'package:pop_up/pages/home.dart';
+import 'package:pop_up/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,8 +16,8 @@ class MyApp extends StatelessWidget {
       title: 'Pop Up',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        colorScheme: myColorScheme,
+        //useMaterial3: true,
       ),
       initialRoute: '/home',
       routes: {

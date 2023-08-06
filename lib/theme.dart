@@ -8,7 +8,7 @@ class MyColors {
   static const  Color lilac =  Color(0xFFDED8F3);
   static const Color blue = Color(0xFF007BFF);
   static const Color lightBlue = Color(0xFFCCE5FF);
-  static const Color red = Color(0xFFDC3545);
+  static const Color red = Color(0xFFe60000);
   static const Color lightRed = Color(0xFFfbebec);
   static const Color yellow = Color(0xFFFFA500);
   static const Color lightYellow = Color(0xFFffedcc);
@@ -16,8 +16,8 @@ class MyColors {
 }
 
 ColorScheme myColorScheme = const ColorScheme(
-  primary: MyColors.purple,
-  secondary: MyColors.purple,
+  primary: MyColors.red,
+  secondary: MyColors.red,
   surface: Colors.white,
   background: Colors.white,
   error: MyColors.red,
@@ -32,15 +32,12 @@ ColorScheme myColorScheme = const ColorScheme(
 ThemeData _buildCustomTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
-    colorScheme: myColorScheme,
-    toggleableActiveColor: MyColors.purple,
-    primaryColor: MyColors.purple,
+    primaryColor: MyColors.red,
     scaffoldBackgroundColor: Colors.white,
     cardColor: Colors.white,
-    errorColor: MyColors.red,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-          primary: MyColors.purple,
+          backgroundColor: MyColors.red,
           //textTheme: ButtonTextTheme.primary,
           //height: 50,
           minimumSize: const Size.fromHeight(50),
@@ -51,7 +48,7 @@ ThemeData _buildCustomTheme() {
       )
     ),
     textTheme: _buildCustomTextTheme(base.textTheme),
-    primaryTextTheme: _buildCustomTextTheme(base.primaryTextTheme),
+    primaryTextTheme: _buildCustomTextTheme(base.primaryTextTheme), colorScheme: myColorScheme.copyWith(error: MyColors.red),
   );
 }
 

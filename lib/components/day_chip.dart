@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pop_up/size_config.dart';
 
 import '../theme.dart';
 
@@ -20,10 +21,10 @@ class DayChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(60.0), ),
+      shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(getProportionateScreenWidth(30)),),
       label: SizedBox(
-          height: 30,
-          width: 30,
+          height: getProportionateScreenWidth(30),
+          width: getProportionateScreenWidth(30),
           child: Center(child: Text(label, style: TextStyle(color: selected? color : Colors.grey.shade700),))
       ),
       labelPadding: const EdgeInsets.all(2),
@@ -33,6 +34,7 @@ class DayChip extends StatelessWidget {
       backgroundColor: Colors.grey.shade200,
       elevation: 1,
       showCheckmark: false,
+
     );
 
   }

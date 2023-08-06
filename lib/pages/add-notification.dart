@@ -18,8 +18,8 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
   final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   List<TimeOfDay> times = [TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute + 1)];
   DateTime _startDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  DateTime? _endDate;
-  bool isRepeated = true;
+  DateTime _endDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1));
+  bool isRepeated = false;
   List<int> days = [1,2,3,4,5,6,7];
   String label = 'no label';
 
@@ -27,18 +27,6 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
     final TimeOfDay? newTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute + 1),
-      builder: (context, child){
-        return Theme(
-          data: Theme.of(context).copyWith(
-            primaryColor: MyColors.blue,
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: MyColors.blue,
-              secondary: MyColors.lightBlue,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
     if (newTime != null) {
       setState(() {
@@ -51,21 +39,9 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
     final DateTime? newDate = await showDatePicker(
       context: context,
       initialDate: _startDate,
-      firstDate: DateTime(2020, 1),
+      firstDate: DateTime(2023, 1),
       lastDate: DateTime.now().add(const Duration(days: 7300)),
       helpText: 'Select start date',
-      builder: (context, child){
-        return Theme(
-          data: Theme.of(context).copyWith(
-            primaryColor: MyColors.blue,
-            colorScheme: Theme.of(context).colorScheme.copyWith(
-              primary: MyColors.blue,
-              secondary: MyColors.lightBlue,
-            ),
-          ),
-          child: child!,
-        );
-      },
     );
     if (newDate != null) {
       setState(() {
@@ -73,6 +49,22 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
       });
     }
   }
+
+  void _selectEndDate() async {
+    final DateTime? newDate = await showDatePicker(
+      context: context,
+      initialDate: _endDate,
+      firstDate: DateTime(2023, 1),
+      lastDate: DateTime.now().add(const Duration(days: 7300)),
+      helpText: 'Select End date',
+    );
+    if (newDate != null) {
+      setState(() {
+        _startDate = newDate;
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +90,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
         ),
         body:
         Padding(
-            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: getProportionateScreenWidth(10)),
+            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: getProportionateScreenWidth(20)),
             child: ListView(
               children: [
                 Form(
@@ -107,6 +99,35 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16,),
+                        InkWell(
+                          onTap: _selectStartDate,
+                          child: Container(
+                            height: 60,
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                                color: const Color(0xFFf3f3f3) ,
+                                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                //border: Border.all(color: const Color(0xFFe6e6e6))
+                                border: Border.all(color: const Color(0xFFf3f3f3))
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text ('Start Date', style: TextStyle(color: Colors.grey.shade700, fontSize: 16),),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(_startDate.isAtSameMomentAs(today)? 'Today ': DateFormat('d MMM y').format(_startDate)
+                                        , style: TextStyle(color: Colors.grey.shade700, fontSize: 16)),
+                                    const SizedBox(width: 4,),
+                                    Icon(Icons.today, size: 20, color: Colors.grey.shade700,)
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 16,),
                         InkWell(
                           onTap: _selectTime,
@@ -159,126 +180,25 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                           }).toList(),
                         ),
                         const SizedBox(height: 16,),
-                        const Text(' Schedule', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        const SizedBox(height: 8,),
-                        Center(
-                          child: Wrap(
-                            runSpacing: 1,
-                            spacing: 2,
-                            children: [
-                              DayChip(
-                                backgroundColor: MyColors.lightBlue,
-                                color: MyColors.blue,
-                                label: 'Su',
-                                selected: days.contains(DateTime.sunday) ? true : false,
-                                onSelected: (bool value) {
-                                  value
-                                      ?  setState(() {
-                                    days.add(DateTime.sunday);
-                                  })
-                                      : setState((){
-                                    days.remove(DateTime.sunday);
-                                  });
-                                },
-                              ),
-                              DayChip(
-                                backgroundColor: MyColors.lightBlue,
-                                color: MyColors.blue,
-                                label: 'Mo',
-                                selected: days.contains(DateTime.monday) ? true : false,
-                                onSelected: (bool value) {
-                                  value
-                                      ?  setState(() {
-                                    days.add(DateTime.monday);
-                                  })
-                                      : setState((){
-                                    days.remove(DateTime.monday);
-                                  });
-                                },
-                              ),
-                              DayChip(
-                                backgroundColor: MyColors.lightBlue,
-                                color: MyColors.blue,
-                                label: 'Tu',
-                                selected: days.contains(DateTime.tuesday) ? true : false,
-                                onSelected: (bool value) {
-                                  value
-                                      ?  setState(() {
-                                    days.add(DateTime.tuesday);
-                                  })
-                                      : setState((){
-                                    days.remove(DateTime.tuesday);
-                                  });
-                                },
-                              ),
-                              DayChip(
-                                backgroundColor: MyColors.lightBlue,
-                                color: MyColors.blue,
-                                label: 'We',
-                                selected:
-                                days.contains(DateTime.wednesday) ? true : false,
-                                onSelected: (bool value) {
-                                  value
-                                      ?  setState(() {
-                                    days.add(DateTime.wednesday);
-                                  })
-                                      : setState((){
-                                    days.remove(DateTime.wednesday);
-                                  });
-                                },
-                              ),
-                              DayChip(
-                                backgroundColor: MyColors.lightBlue,
-                                color: MyColors.blue,
-                                label: 'Th',
-                                selected: days.contains(DateTime.thursday) ? true : false,
-                                onSelected: (bool value) {
-                                  value
-                                      ?  setState(() {
-                                    days.add(DateTime.thursday);
-                                  })
-                                      : setState((){
-                                    days.remove(DateTime.thursday);
-                                  });
-                                },
-                              ),
-                              DayChip(
-                                backgroundColor: MyColors.lightBlue,
-                                color: MyColors.blue,
-                                label: 'Fr',
-                                selected: days.contains(DateTime.friday) ? true : false,
-                                onSelected: (bool value) {
-                                  value
-                                      ?  setState(() {
-                                    days.add(DateTime.friday);
-                                  })
-                                      : setState((){
-                                    days.remove(DateTime.friday);
-                                  });
-                                },
-                              ),
-                              DayChip(
-                                backgroundColor: MyColors.lightBlue,
-                                color: MyColors.blue,
-                                label: 'Sa',
-                                selected: days.contains(DateTime.saturday) ? true : false,
-                                onSelected: (bool value) {
-                                  value
-                                      ?  setState(() {
-                                    days.add(DateTime.saturday);
-                                  })
-                                      : setState((){
-                                    days.remove(DateTime.saturday);
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 32,),
                         const Text(' Duration', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
                         ListTile(
-                          title: const Text('Ongoing'),
+                          title: const Text('Once'),
+                          contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
+                          visualDensity: const VisualDensity(horizontal: 0, vertical: VisualDensity.minimumDensity),
+                          leading: Radio(
+                            value: false,
+                            groupValue: isRepeated,
+                            onChanged: (value) {
+                              setState(() {
+                                isRepeated = false;
+                                _endDate = _startDate;
+                              });
+                            },
+                            activeColor: MyColors.blue,
+                          ),
+                        ),
+                        ListTile(
+                          title: const Text('Repeat'),
                           contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
                           visualDensity:  const VisualDensity(horizontal: 0, vertical: VisualDensity.minimumDensity),
                           leading: Radio(
@@ -287,14 +207,13 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                             onChanged: (value) {
                               setState(() {
                                 isRepeated = true;
-                                _endDate = null;
                               });
                             },
                             activeColor: MyColors.blue,
                           ),
                         ),
                         ListTile(
-                          title: const Text('Number of days'),
+                          title: const Text('Customized'),
                           contentPadding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 8.0),
                           visualDensity: const VisualDensity(horizontal: 0, vertical: VisualDensity.minimumDensity),
                           leading: Radio(
@@ -314,8 +233,125 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            const Text(' Schedule', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                            const SizedBox(height: 8,),
+                            Center(
+                              child: Wrap(
+                                runSpacing: 1,
+                                spacing: 2,
+                                children: [
+                                  DayChip(
+                                    backgroundColor: MyColors.lightBlue,
+                                    color: MyColors.blue,
+                                    label: 'Su',
+                                    selected: days.contains(DateTime.sunday) ? true : false,
+                                    onSelected: (bool value) {
+                                      value
+                                          ?  setState(() {
+                                        days.add(DateTime.sunday);
+                                      })
+                                          : setState((){
+                                        days.remove(DateTime.sunday);
+                                      });
+                                    },
+                                  ),
+                                  DayChip(
+                                    backgroundColor: MyColors.lightBlue,
+                                    color: MyColors.blue,
+                                    label: 'Mo',
+                                    selected: days.contains(DateTime.monday) ? true : false,
+                                    onSelected: (bool value) {
+                                      value
+                                          ?  setState(() {
+                                        days.add(DateTime.monday);
+                                      })
+                                          : setState((){
+                                        days.remove(DateTime.monday);
+                                      });
+                                    },
+                                  ),
+                                  DayChip(
+                                    backgroundColor: MyColors.lightBlue,
+                                    color: MyColors.blue,
+                                    label: 'Tu',
+                                    selected: days.contains(DateTime.tuesday) ? true : false,
+                                    onSelected: (bool value) {
+                                      value
+                                          ?  setState(() {
+                                        days.add(DateTime.tuesday);
+                                      })
+                                          : setState((){
+                                        days.remove(DateTime.tuesday);
+                                      });
+                                    },
+                                  ),
+                                  DayChip(
+                                    backgroundColor: MyColors.lightBlue,
+                                    color: MyColors.blue,
+                                    label: 'We',
+                                    selected:
+                                    days.contains(DateTime.wednesday) ? true : false,
+                                    onSelected: (bool value) {
+                                      value
+                                          ?  setState(() {
+                                        days.add(DateTime.wednesday);
+                                      })
+                                          : setState((){
+                                        days.remove(DateTime.wednesday);
+                                      });
+                                    },
+                                  ),
+                                  DayChip(
+                                    backgroundColor: MyColors.lightBlue,
+                                    color: MyColors.blue,
+                                    label: 'Th',
+                                    selected: days.contains(DateTime.thursday) ? true : false,
+                                    onSelected: (bool value) {
+                                      value
+                                          ?  setState(() {
+                                        days.add(DateTime.thursday);
+                                      })
+                                          : setState((){
+                                        days.remove(DateTime.thursday);
+                                      });
+                                    },
+                                  ),
+                                  DayChip(
+                                    backgroundColor: MyColors.lightBlue,
+                                    color: MyColors.blue,
+                                    label: 'Fr',
+                                    selected: days.contains(DateTime.friday) ? true : false,
+                                    onSelected: (bool value) {
+                                      value
+                                          ?  setState(() {
+                                        days.add(DateTime.friday);
+                                      })
+                                          : setState((){
+                                        days.remove(DateTime.friday);
+                                      });
+                                    },
+                                  ),
+                                  DayChip(
+                                    backgroundColor: MyColors.lightBlue,
+                                    color: MyColors.blue,
+                                    label: 'Sa',
+                                    selected: days.contains(DateTime.saturday) ? true : false,
+                                    onSelected: (bool value) {
+                                      value
+                                          ?  setState(() {
+                                        days.add(DateTime.saturday);
+                                      })
+                                          : setState((){
+                                        days.remove(DateTime.saturday);
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16,),
                             InkWell(
-                              onTap: _selectStartDate,
+                              onTap: _selectEndDate,
                               child: Container(
                                 height: 60,
                                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -329,11 +365,11 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text ('Start Date', style: TextStyle(color: Colors.grey.shade700, fontSize: 16),),
+                                    Text ('End Date', style: TextStyle(color: Colors.grey.shade700, fontSize: 16),),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Text(_startDate.isAtSameMomentAs(today)? 'Today ': DateFormat('d MMM y').format(_startDate)
+                                        Text(DateFormat('d MMM y').format(_endDate)
                                             , style: TextStyle(color: Colors.grey.shade700, fontSize: 16)),
                                         const SizedBox(width: 4,),
                                         Icon(Icons.today, size: 20, color: Colors.grey.shade700,)
@@ -344,47 +380,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                               ),
                             ),
                             const SizedBox(height: 16,),
-                            TextFormField(
-                              keyboardType: TextInputType.number,
-                              cursorColor: MyColors.black26 ,
-                              decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color(0xFFf3f3f3),
-                                  floatingLabelStyle: const TextStyle(color: MyColors.black26),
-                                  contentPadding: const EdgeInsets.fromLTRB(15, 20, 30, 20),
-                                  enabledBorder: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(color: Color(0xFFf6f6f6)),
-                                  ),
-                                  focusedBorder: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(color: MyColors.blue),
-                                  ),
-                                  errorBorder: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(color: MyColors.red),
-                                  ),
-                                  focusedErrorBorder: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                    borderSide: BorderSide(color: MyColors.red),
-                                  ),
 
-                                  labelText: 'Number of days',
-                                  suffixIcon:  Icon(
-                                    Icons.date_range, size: 20, color: Colors.grey.shade700,),
-                                  suffixStyle: const TextStyle(color: MyColors.blue )
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty || value.isNotEmpty && int.tryParse(value).runtimeType != int) {
-                                  return 'Please enter a number';
-                                }
-                                return null;
-                              },
-                              onSaved: (value){setState(() {
-                                _endDate = _startDate.add(Duration(days: int.parse(value!)-1));
-                              });},
-                            ),
-                            const SizedBox(height: 24,),
                           ],
                         ),
                         ElevatedButton(
