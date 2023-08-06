@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pop_up/size_config.dart';
@@ -5,6 +7,7 @@ import 'package:pop_up/size_config.dart';
 import '../components/day_chip.dart';
 import '../local_notifications.dart';
 import '../theme.dart';
+import '../util.dart';
 
 class AddNotificationPage extends StatefulWidget {
   const AddNotificationPage({super.key});
@@ -19,19 +22,19 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
 
   String label = '';
 
+  final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  List<TimeOfDay> times = [TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute + 1)];
+  DateTime _selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  List<int> days = [1,2,3,4,5,6,7];
+
   // 1: Once, 2:Weekly, 3: Daily, 4: Yearly
   int? selectedRadio = 1;
   void _handleRadioValueChanged(int? value) {
     setState(() {
       selectedRadio = value;
+      _selectedDate = today;
     });
   }
-
-
-  final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  List<TimeOfDay> times = [TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute + 1)];
-  DateTime _selectedDate = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-  List<int> days = [1,2,3,4,5,6,7];
 
 
   void _selectTime() async {
@@ -106,6 +109,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                 child: ListView(
                   children: [
                     const SizedBox(height: 8,),
+                    //TODO: Empty label resolve
                     TextFormField(
                       cursorColor: MyColors.black26 ,
                       decoration: const InputDecoration(
@@ -406,31 +410,72 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
     );
   }
 
+  String getRepeatDescriptions(){
+    String description ='';
+    switch(selectedRadio) {
+      case 1:
+        description = 'Today Only';
+        break;
+      case 2:
+        description = 'Every ${getWeekdayNames(days)}';
+        break;
+      case 3:
+        description = 'Daily';
+        break;
+      case 4:
+        description = 'Yearly';
+    }
+    return description;
+  }
+
+  int getUniqueId(){
+    final now = DateTime.now();
+    int timestamp = now.microsecondsSinceEpoch;
+    int id = timestamp ~/ 1000000 + timestamp % 1000000;
+    return id;
+  }
   void pushNotifications(){
     final now = DateTime.now();
     int timestamp = now.microsecondsSinceEpoch;
     String notificationGroupKey = timestamp.toString();
+
+    Map<String, dynamic> payload = {
+      'timestamp': timestamp,
+      'repeat': getRepeatDescriptions(),
+    };
+
+    String jsonStringPayload = jsonEncode(payload);
+
     for (var time in times){
-      int notificationId = timestamp ~/ 1000000 + timestamp % 1000000;
+      var dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
+          time.hour, time.minute);
+
       switch(selectedRadio) {
         //Once
         case 1:
-          var dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
-              time.hour, time.minute);
           //only push notification if date+time is after NOW
           if (dateTime.isAfter(now)) {
-            onceNotification(notificationId, label, dateTime, notificationGroupKey, notificationGroupKey);
+            onceNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
           }
           break;
         //Weekly
         case 2:
-         
+          for (var day in days) {
+            //Get next occurrence of day
+            while (dateTime.weekday != day) {
+              dateTime = dateTime.add(const Duration(days: 1));
+            }
+            weeklyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
+
+          }
           break;
+        //Daily
         case 3:
-          print('two!');
+          dailyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
           break;
+        //Yearly
         case 4:
-          print('choose a different number!');
+          yearlyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
       }
     }
   }

@@ -10,7 +10,7 @@ String currentTimezone = 'Unknown';
 initializeNotifications() async {
 
   const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('app_icon');
+  AndroidInitializationSettings('@mipmap/ic_launcher');
 
   const InitializationSettings initializationSettings = InitializationSettings(
     android: initializationSettingsAndroid,
@@ -40,7 +40,6 @@ Future<void> onceNotification(
     android: androidPlatformChannelSpecifics,
   );
 
-
   var tzDateTime = tz.TZDateTime.from(dateTime, tz.getLocation(await FlutterTimezone.getLocalTimezone()),)
       .add(const Duration(seconds: 1));
 
@@ -51,6 +50,10 @@ Future<void> onceNotification(
       uiLocalNotificationDateInterpretation:
       UILocalNotificationDateInterpretation.absoluteTime
   );
+
+  print('pushed Notification');
+  _checkPendingNotificationRequests();
+
 }
 
 Future<void> dailyNotification(
@@ -82,6 +85,9 @@ Future<void> dailyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time
   );
+  print('pushed Notification');
+  _checkPendingNotificationRequests();
+
 }
 
 
@@ -114,6 +120,10 @@ Future<void> weeklyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
   );
+  print('pushed Notification');
+  _checkPendingNotificationRequests();
+
+
 }
 
 Future<void> yearlyNotification(
@@ -145,6 +155,9 @@ Future<void> yearlyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dateAndTime
   );
+  print('pushed Notification');
+  _checkPendingNotificationRequests();
+
 }
 
 
@@ -152,13 +165,11 @@ Future<void> cancelNotification(int id) async {
   await flutterLocalNotificationsPlugin.cancel(id);
 }
 
-void requestPermissions() {
-  flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-      IOSFlutterLocalNotificationsPlugin>()
-      ?.requestPermissions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+Future<void> _checkPendingNotificationRequests() async {
+  final List<PendingNotificationRequest> pendingNotificationRequests =
+  await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  for (final request  in pendingNotificationRequests) {
+    print(request.title);
+    print(request.payload);
+  }
 }
