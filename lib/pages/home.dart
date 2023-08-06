@@ -38,31 +38,51 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(
-        toolbarHeight: 80,
-        //title: const Text('CALENDER', style: TextStyle(fontWeight: FontWeight.bold, color: MyColors.black26, fontSize: 16),),
-        actions: [
-          IconButton(
-              onPressed:(){
-                //showAddBottomSheet(context);
-                Navigator.pushNamed(context, '/add_notification');
-              },
-              icon: const Icon(
-                  Icons.add,
-                  color: MyColors.black26,
-                  size: 24
-              )
-          ),
-          const SizedBox(width: 8,)
-        ],
-        elevation: 0.0,
-        backgroundColor: Colors.grey.shade100,
-        iconTheme: const IconThemeData(
-          color: MyColors.black26,
-        ),
-      ),
       body: Column(
         children: [
+          SizedBox(height: getProportionateScreenHeight(60)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
+                Text('+ NEW POP UP', style: TextStyle(color: MyColors.red, fontSize: 14, ),)
+              ],
+            ),
+          ),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          /*AppBar(
+            toolbarHeight: 70,
+            title: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
+                  child: const Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
+                ),
+                Text('+ NEW \nPOP UP', style: TextStyle(color: MyColors.red, fontSize: 14, ),)
+              ],
+            ),
+            /*actions: [
+              IconButton(
+                  onPressed:(){
+                    //showAddBottomSheet(context);
+                    Navigator.pushNamed(context, '/add_notification');
+                  },
+                  icon: const Icon(
+                      Icons.add,
+                      color: MyColors.red,
+                      size: 30
+                  )
+              ),
+              const SizedBox(width: 8,)
+            ],*/
+            elevation: 0.0,
+            backgroundColor: Colors.grey.shade100,
+            iconTheme: const IconThemeData(
+              color: MyColors.black26,
+            ),
+          ),*/
           Container(
             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15),
                 vertical: getProportionateScreenHeight(15)),
