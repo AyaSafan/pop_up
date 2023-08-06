@@ -8,8 +8,8 @@ class DayChip extends StatelessWidget {
     this.label ='',
     this.selected = false,
     this.onSelected,
-    this.color = MyColors.blue,
-    this.backgroundColor = MyColors.lightBlue
+    this.color = MyColors.red,
+    this.backgroundColor = MyColors.lightRed
   }) : super(key: key);
 
   final String label;
