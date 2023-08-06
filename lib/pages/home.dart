@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../components/date_card.dart';
+import '../main.dart';
 import '../size_config.dart';
 import '../theme.dart';
 
@@ -19,6 +22,13 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime _selectedDay = DateTime.now();
 
   List<PendingNotificationRequest> _selectedNotifications = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    //getPendingNotificationRequests();
+  }
 
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
@@ -43,11 +53,14 @@ class _MyHomePageState extends State<MyHomePage> {
           SizedBox(height: getProportionateScreenHeight(60)),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
-            child: const Row(
+            child:  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
-                Text('+ NEW POP UP', style: TextStyle(color: MyColors.red, fontSize: 14, ),)
+                const Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
+                InkWell(
+                    onTap: (){Navigator.pushNamed(context, '/add_notification');},
+                    child: const Text('+ NEW POP UP', style: TextStyle(color: MyColors.red, fontSize: 14, ),)
+                )
               ],
             ),
           ),
