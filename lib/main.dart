@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pop_up/local_notifications.dart';
 import 'package:pop_up/pages/add-notification.dart';
 import 'package:pop_up/pages/home.dart';
 import 'package:pop_up/theme.dart';
@@ -14,15 +15,21 @@ FlutterLocalNotificationsPlugin();
 
 Future<void> _configureLocalTimeZone() async {
   tz.initializeTimeZones();
-  final String? timeZoneName = await FlutterTimezone.getLocalTimezone();
-  tz.setLocalLocation(tz.getLocation(timeZoneName!));
+  final String timeZoneName = await FlutterTimezone.getLocalTimezone();
+  tz.setLocalLocation(tz.getLocation(timeZoneName));
 }
 
 Future<void> main() async{
 
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeNotifications();
   await _configureLocalTimeZone();
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
 
   runApp(const MyApp());
 }
