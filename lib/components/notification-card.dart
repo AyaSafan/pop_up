@@ -67,10 +67,19 @@ class _NotificationCardState extends State<NotificationCard> {
                   Text(widget.notification.title!, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),),
                   const SizedBox(height: 4,),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Icon(Icons.repeat,size: 16,color: Colors.black45, ),
                       const SizedBox(width: 2,),
-                      Text(payload["description"], style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black45),),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width - getProportionateScreenWidth(200),
+                        child: Text(
+                          payload["description"],
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black45),
+                        ),
+                      ),
                     ],
                   )
                 ],

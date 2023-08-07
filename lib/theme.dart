@@ -3,15 +3,8 @@ import 'package:flutter/material.dart';
 final ThemeData defaultTheme = _buildCustomTheme();
 
 class MyColors {
-
-  static const Color purple =  Color(0xFF6249C5);
-  static const  Color lilac =  Color(0xFFDED8F3);
-  static const Color blue = Color(0xFF007BFF);
-  static const Color lightBlue = Color(0xFFCCE5FF);
   static const Color red = Color(0xFFe60000);
   static const Color lightRed = Color(0xFFfbebec);
-  static const Color yellow = Color(0xFFFFA500);
-  static const Color lightYellow = Color(0xFFffedcc);
   static const Color black26 = Color(0xFF262626);
 }
 

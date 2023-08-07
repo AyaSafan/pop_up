@@ -416,7 +416,11 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
         description = 'Today Only';
         break;
       case 2:
-        description = 'Every ${getWeekdayNames(days)}';
+        if (days.length == 7){
+          description = 'Everyday';
+        } else {
+          description = 'Every ${getWeekdayNames(days)}';
+        }
         break;
       case 3:
         description = 'Daily';
@@ -510,7 +514,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
             dateTime = DateTime(_selectedDate.year+1, _selectedDate.month, _selectedDate.day,
                 time.hour, time.minute);
           }
-          
+
           formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
 
           payload = {
