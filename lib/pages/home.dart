@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
 
                       },
-                    child: Icon(Icons.add, size:  30, color: MyColors.red,)
+                    child: const Icon(Icons.add, size:  30, color: MyColors.red,)
                 )
               ],
             ),
@@ -156,7 +156,10 @@ class _MyHomePageState extends State<MyHomePage> {
               daysOfWeekHeight: 18,
               rowHeight: 42,
               calendarStyle: CalendarStyle(
-                defaultDecoration : const BoxDecoration(shape: BoxShape.rectangle),
+                defaultDecoration : BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(10),),
+                markerDecoration : BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(10),),
+                outsideDecoration : BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(10),),
+                weekendDecoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(10),),
                 selectedDecoration: BoxDecoration(
                   color: MyColors.red,
                   shape: BoxShape.rectangle,
@@ -217,6 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     const SizedBox(height: 16),
                     DateCard(selectedDay: _selectedDay),
                     const SizedBox(height: 16),
+                    //TODO: remove listview scroll color
                     Expanded(
                       child: ListView.builder(
                         padding: EdgeInsets.zero, // Set padding to zero
