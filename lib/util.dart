@@ -16,3 +16,20 @@ String getWeekdayNames(List<int> dayNumbers) {
 
   return weekdayNames.join(', ');
 }
+
+bool isSameFullDay(DateTime dateTime1, DateTime dateTime2) {
+  final date1 = DateTime(dateTime1.year, dateTime1.month, dateTime1.day);
+  final date2 = DateTime(dateTime2.year, dateTime2.month, dateTime2.day);
+  return date1.isAtSameMomentAs(date2);
+}
+
+bool isSameWeekday(DateTime dateTime1, DateTime dateTime2) {
+  return dateTime1.weekday == dateTime2.weekday;
+}
+
+bool isSameDayAndMonth(DateTime dateTime1, DateTime dateTime2) {
+  return dateTime1.day == dateTime2.day && dateTime1.month == dateTime2.month;
+}
+
+
+

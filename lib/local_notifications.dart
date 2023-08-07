@@ -50,7 +50,7 @@ Future<void> onceNotification(
       uiLocalNotificationDateInterpretation:
       UILocalNotificationDateInterpretation.absoluteTime
   );
-
+  print(payload!);
 }
 
 Future<void> dailyNotification(
@@ -82,7 +82,7 @@ Future<void> dailyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time
   );
-
+  print(payload!);
 }
 
 
@@ -115,6 +115,7 @@ Future<void> weeklyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
   );
+  print(payload!);
 
 }
 
@@ -147,7 +148,7 @@ Future<void> yearlyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dateAndTime
   );
-
+  print(payload!);
 }
 
 

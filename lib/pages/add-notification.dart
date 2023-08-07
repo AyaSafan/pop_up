@@ -439,16 +439,20 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
     int timestamp = now.microsecondsSinceEpoch;
     String notificationGroupKey = timestamp.toString();
 
-    Map<String, dynamic> payload = {
-      'timestamp': timestamp,
-      'repeat': getRepeatDescriptions(),
-    };
-
-    String jsonStringPayload = jsonEncode(payload);
-
     for (var time in times){
       var dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
           time.hour, time.minute);
+
+      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+
+      Map<String, dynamic> payload = {
+        'createed_timestamp': timestamp,
+        'formattedDate': formattedDate,
+        'description': getRepeatDescriptions(),
+        'repeat': selectedRadio
+      };
+
+      String jsonStringPayload = jsonEncode(payload);
 
       switch(selectedRadio) {
         //Once
@@ -475,6 +479,10 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
           break;
         //Yearly
         case 4:
+          if (dateTime.isBefore(now)) {
+            dateTime = DateTime(_selectedDate.year+1, _selectedDate.month, _selectedDate.day,
+                time.hour, time.minute);
+          }
           yearlyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
       }
     }

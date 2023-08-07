@@ -11,6 +11,8 @@ import '../theme.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../util.dart';
+
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -21,13 +23,53 @@ class _MyHomePageState extends State<MyHomePage> {
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
+  List<PendingNotificationRequest> _pendingNotifications = [];
   List<PendingNotificationRequest> _selectedNotifications = [];
+
+  Future<void> getPendingNotificationRequests() async {
+    print('-------------Get Pending Notifications');
+    _pendingNotifications = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+  }
+
+  void getSelectedNotificationRequests() {
+
+    for (PendingNotificationRequest notification in _pendingNotifications){
+      Map<String, dynamic> payload = jsonDecode(notification.payload!);
+      DateTime payloadDateTime = DateFormat('yyyy-MM-dd – kk:mm').parse(payload["formattedDate"]);
+        switch(payload["repeat"]) {
+        //Once
+          case 1:
+            if(isSameFullDay(payloadDateTime, _selectedDay)){
+              _selectedNotifications.add(notification);
+            }
+            break;
+        //Weekly
+          case 2:
+            if(isSameWeekday(payloadDateTime, _selectedDay)){
+              _selectedNotifications.add(notification);
+            }
+            break;
+        //Daily
+          case 3:
+            _selectedNotifications.add(notification);
+            break;
+        //Yearly
+          case 4:
+            if(isSameDayAndMonth(payloadDateTime, _selectedDay)){
+              _selectedNotifications.add(notification);
+            }
+        }
+
+      }
+
+    }
 
 
   @override
   void initState() {
     super.initState();
-    //getPendingNotificationRequests();
+    getPendingNotificationRequests().then((value) => getSelectedNotificationRequests);
+
   }
 
 
@@ -36,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _focusedDay = focusedDay;
         _selectedDay = selectedDay;
+        _selectedNotifications = [];
+        getSelectedNotificationRequests();
       });
     }
   }
@@ -58,7 +102,15 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 const Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
                 InkWell(
-                    onTap: (){Navigator.pushNamed(context, '/add_notification');},
+                    onTap: ()async{
+                     await Navigator.pushNamed(context, '/add_notification');
+                      // When the page is popped, this code will be executed
+                      // You can refresh the current page here if needed
+                      setState(() {
+                        getPendingNotificationRequests().then((value) => getSelectedNotificationRequests);
+                      });
+
+                      },
                     child: const Text('+ NEW POP UP', style: TextStyle(color: MyColors.red, fontSize: 14, ),)
                 )
               ],
@@ -164,7 +216,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
 
                 ),
-                child: ListView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
                       child: Container(
@@ -178,7 +231,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(height: 16),
                     DateCard(selectedDay: _selectedDay),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: _selectedNotifications.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final notification = _selectedNotifications[index];
+
+                          return Text(notification.payload!);
+                        },
+                      ),
+                    )
                   ],
                 )
             ),
