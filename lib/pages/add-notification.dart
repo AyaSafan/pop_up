@@ -445,7 +445,6 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
       String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
 
       Map<String, dynamic> payload = {
-        'createed_timestamp': timestamp,
         'notificationGroupKey': notificationGroupKey,
         'formattedDate': formattedDate,
         'description': getRepeatDescriptions(),
@@ -469,6 +468,18 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
             while (dateTime.weekday != day) {
               dateTime = dateTime.add(const Duration(days: 1));
             }
+
+            formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+
+            payload = {
+              'notificationGroupKey': notificationGroupKey,
+              'formattedDate': formattedDate,
+              'description': getRepeatDescriptions(),
+              'repeat': selectedRadio
+            };
+
+            jsonStringPayload = jsonEncode(payload);
+
             await weeklyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
 
           }
@@ -479,6 +490,18 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
             dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day+1,
                 time.hour, time.minute);
           }
+
+          formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+
+          payload = {
+            'notificationGroupKey': notificationGroupKey,
+            'formattedDate': formattedDate,
+            'description': getRepeatDescriptions(),
+            'repeat': selectedRadio
+          };
+
+          jsonStringPayload = jsonEncode(payload);
+
           await dailyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
           break;
         //Yearly
@@ -487,6 +510,18 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
             dateTime = DateTime(_selectedDate.year+1, _selectedDate.month, _selectedDate.day,
                 time.hour, time.minute);
           }
+          
+          formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+
+          payload = {
+            'notificationGroupKey': notificationGroupKey,
+            'formattedDate': formattedDate,
+            'description': getRepeatDescriptions(),
+            'repeat': selectedRadio
+          };
+
+          jsonStringPayload = jsonEncode(payload);
+
           await yearlyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
       }
     }
