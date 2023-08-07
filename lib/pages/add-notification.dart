@@ -446,6 +446,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
 
       Map<String, dynamic> payload = {
         'createed_timestamp': timestamp,
+        'notificationGroupKey': notificationGroupKey,
         'formattedDate': formattedDate,
         'description': getRepeatDescriptions(),
         'repeat': selectedRadio

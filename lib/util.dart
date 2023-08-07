@@ -31,5 +31,11 @@ bool isSameDayAndMonth(DateTime dateTime1, DateTime dateTime2) {
   return dateTime1.day == dateTime2.day && dateTime1.month == dateTime2.month;
 }
 
+String formatTime(String formattedDate) {
+  DateTime dateTime = DateFormat('yyyy-MM-dd – kk:mm').parse(formattedDate);
+  String formattedTime = DateFormat('hh:mm a').format(dateTime);
+  return formattedTime;
+}
+
 
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:pop_up/components/notification-card.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../components/date_card.dart';
@@ -233,14 +234,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     const SizedBox(height: 16),
                     DateCard(selectedDay: _selectedDay),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     Expanded(
                       child: ListView.builder(
+                        padding: EdgeInsets.zero, // Set padding to zero
                         itemCount: _selectedNotifications.length,
                         itemBuilder: (BuildContext context, int index) {
                           final notification = _selectedNotifications[index];
-
-                          return Text(notification.payload!);
+                          return NotificationCard( notification: notification,);
                         },
                       ),
                     )
