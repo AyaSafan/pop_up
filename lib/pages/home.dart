@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<PendingNotificationRequest> _selectedNotifications = [];
 
   Future<void> getPendingNotificationRequests() async {
-    print('-------------Get Pending Notifications');
+    print('-------------Get Pending Notifications ------------------');
     _pendingNotifications = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
   }
 

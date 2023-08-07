@@ -1,5 +1,6 @@
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:pop_up/main.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -50,7 +51,7 @@ Future<void> onceNotification(
       uiLocalNotificationDateInterpretation:
       UILocalNotificationDateInterpretation.absoluteTime
   );
-  print(payload!);
+  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
 }
 
 Future<void> dailyNotification(
@@ -82,7 +83,7 @@ Future<void> dailyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time
   );
-  print(payload!);
+  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
 }
 
 
@@ -115,7 +116,7 @@ Future<void> weeklyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
   );
-  print(payload!);
+  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
 
 }
 
@@ -148,7 +149,7 @@ Future<void> yearlyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dateAndTime
   );
-  print(payload!);
+  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
 }
 
 

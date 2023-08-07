@@ -85,8 +85,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
             IconButton(
                 onPressed: (){
                   _formKey.currentState!.save();
-                  pushNotifications();
-                  Navigator.pop(context);
+                  pushNotifications().then((value) => Navigator.pop(context));
                 },
                 icon: const Icon(
                     Icons.done,
@@ -434,7 +433,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
     int id = timestamp ~/ 1000000 + timestamp % 1000000;
     return id;
   }
-  void pushNotifications(){
+  Future<void> pushNotifications() async{
     final now = DateTime.now();
     int timestamp = now.microsecondsSinceEpoch;
     String notificationGroupKey = timestamp.toString();
@@ -459,7 +458,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
         case 1:
           //only push notification if date+time is after NOW
           if (dateTime.isAfter(now)) {
-            onceNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
+            await onceNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
           }
           break;
         //Weekly
@@ -469,13 +468,17 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
             while (dateTime.weekday != day) {
               dateTime = dateTime.add(const Duration(days: 1));
             }
-            weeklyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
+            await weeklyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
 
           }
           break;
         //Daily
         case 3:
-          dailyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
+          if (dateTime.isBefore(now)) {
+            dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day+1,
+                time.hour, time.minute);
+          }
+          await dailyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
           break;
         //Yearly
         case 4:
@@ -483,7 +486,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
             dateTime = DateTime(_selectedDate.year+1, _selectedDate.month, _selectedDate.day,
                 time.hour, time.minute);
           }
-          yearlyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
+          await yearlyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
       }
     }
   }
