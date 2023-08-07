@@ -33,6 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void getSelectedNotificationRequests() {
 
+    print('********************* Get Selected Notifications *********************');
+    _selectedNotifications = [];
     for (PendingNotificationRequest notification in _pendingNotifications){
       Map<String, dynamic> payload = jsonDecode(notification.payload!);
       DateTime payloadDateTime = DateFormat('yyyy-MM-dd – kk:mm').parse(payload["formattedDate"]);
@@ -68,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    getPendingNotificationRequests().then((value) => getSelectedNotificationRequests);
+    getPendingNotificationRequests().then((value) => getSelectedNotificationRequests());
 
   }
 
@@ -107,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       // When the page is popped, this code will be executed
                       // You can refresh the current page here if needed
                       setState(() {
-                        getPendingNotificationRequests().then((value) => getSelectedNotificationRequests);
+                        getPendingNotificationRequests().then((value) => getSelectedNotificationRequests());
                       });
 
                       },
