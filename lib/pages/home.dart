@@ -20,7 +20,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  CalendarFormat _calendarFormat = CalendarFormat.week;
+  CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
 
@@ -102,8 +102,15 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
             child:  Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
+                const Row(
+                  children: [
+                    Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
+                    Text(' POP', style: TextStyle(color: MyColors.red, fontSize: 14, fontWeight: FontWeight.bold),),
+                    Text(' UP', style: TextStyle(color: MyColors.red, fontSize: 14),)
+                  ],
+                ),
                 InkWell(
                     onTap: ()async{
                      await Navigator.pushNamed(context, '/add_notification');
@@ -114,43 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       });
 
                       },
-                    child: const Text('+ NEW POP UP', style: TextStyle(color: MyColors.red, fontSize: 14, ),)
+                    child: Icon(Icons.add, size:  30, color: MyColors.red,)
                 )
               ],
             ),
           ),
           SizedBox(height: getProportionateScreenHeight(10)),
-          /*AppBar(
-            toolbarHeight: 70,
-            title: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(10)),
-                  child: const Icon(Icons.mark_chat_unread_outlined, color: MyColors.red, size: 45),
-                ),
-                Text('+ NEW \nPOP UP', style: TextStyle(color: MyColors.red, fontSize: 14, ),)
-              ],
-            ),
-            /*actions: [
-              IconButton(
-                  onPressed:(){
-                    //showAddBottomSheet(context);
-                    Navigator.pushNamed(context, '/add_notification');
-                  },
-                  icon: const Icon(
-                      Icons.add,
-                      color: MyColors.red,
-                      size: 30
-                  )
-              ),
-              const SizedBox(width: 8,)
-            ],*/
-            elevation: 0.0,
-            backgroundColor: Colors.grey.shade100,
-            iconTheme: const IconThemeData(
-              color: MyColors.black26,
-            ),
-          ),*/
           Container(
             padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15),
                 vertical: getProportionateScreenHeight(15)),
@@ -178,14 +154,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               daysOfWeekHeight: 18,
+              rowHeight: 42,
               calendarStyle: CalendarStyle(
-                selectedDecoration: const BoxDecoration(
-                    color: MyColors.red, shape: BoxShape.circle),
+                defaultDecoration : const BoxDecoration(shape: BoxShape.rectangle),
+                selectedDecoration: BoxDecoration(
+                  color: MyColors.red,
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 todayDecoration: BoxDecoration(
-                    color:  MyColors.red.withOpacity(0.5),
-                    shape: BoxShape.circle),
+                  color: MyColors.red.withOpacity(0.5),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-
               selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
               },
