@@ -135,8 +135,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 vertical: getProportionateScreenHeight(15)),
             child: TableCalendar(
               startingDayOfWeek: StartingDayOfWeek.sunday,
-              firstDay: DateTime(2021, 1, 1),
-              lastDay: DateTime(2071, 1, 1),
+              firstDay: DateTime.now(),
+              lastDay: DateTime.now().add(const Duration(days: 14240)),
               focusedDay: _focusedDay,
               calendarFormat: _calendarFormat,
               headerStyle: const HeaderStyle(
@@ -278,7 +278,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ).closed.then((reason) async {
                                     if (!isUndoUsed) {
                                       //print('>>>>>>>>>> cancel Notification ');
-                                      await cancelNotification(notification.id);
+                                      // if repeat == 2 then it's  weekly notification
+                                      var repeat = jsonDecode(notification.payload!)["repeat"];
+                                      if(repeat == 2){
+                                        var groupedIds = jsonDecode(notification.payload!)["groupedIds"];
+                                        for (var id in groupedIds){
+                                          await cancelNotification(id);
+                                        }
+
+                                      }else{
+                                        await cancelNotification(notification.id);
+                                      }
                                       setState(() {
                                         getPendingNotificationRequests().then((value) => getSelectedNotificationRequests());
                                       });

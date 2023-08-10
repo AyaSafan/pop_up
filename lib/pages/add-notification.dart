@@ -431,16 +431,11 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
     return description;
   }
 
-  int getUniqueId(){
-    final now = DateTime.now();
-    int timestamp = now.microsecondsSinceEpoch;
-    int id = timestamp ~/ 1000000 + timestamp % 1000000;
-    return id;
-  }
+
   Future<void> pushNotifications() async{
     final now = DateTime.now();
     int timestamp = now.microsecondsSinceEpoch;
-    String notificationTag = timestamp.toString();
+    int notificationId = timestamp ~/ 1000000 + timestamp % 1000000;
 
     for (var time in times){
       var dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
@@ -449,7 +444,6 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
       String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
 
       Map<String, dynamic> payload = {
-        'notificationTag': notificationTag,
         'formattedDate': formattedDate,
         'description': getRepeatDescriptions(),
         'repeat': selectedRadio
@@ -462,42 +456,45 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
         case 1:
           //only push notification if date+time is after NOW
           if (dateTime.isAfter(now)) {
-            await onceNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationTag);
+            await onceNotification(notificationId, label, dateTime, jsonStringPayload);
           }
           break;
         //Weekly
         case 2:
           if (days.length == 7){
-            //only push notification if date+time is after NOW
-            if (dateTime.isAfter(now)) {
-              await onceNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationTag);
-            }
+            payload['repeat'] = 3;
+            jsonStringPayload = jsonEncode(payload);
+            await dailyNotification(notificationId, label, dateTime, jsonStringPayload);
+
           }
           else{
-            for (var day in days) {
-            //Get next occurrence of day
-            while (dateTime.weekday != day) {
-              dateTime = dateTime.add(const Duration(days: 1));
+            //Get list of IDs for all selected days
+            var groupedIds = [];
+            for (var day in days){
+              var currentNotificationId = notificationId + day;
+              groupedIds.add(currentNotificationId);
             }
 
-            formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+            for (var day in days) {
 
-            payload = {
-              'notificationTag': notificationTag,
-              'formattedDate': formattedDate,
-              'description': getRepeatDescriptions(),
-              'repeat': selectedRadio
-            };
+              var currentNotificationId = notificationId + day;
+              //Get next occurrence of day
+              while (dateTime.weekday != day) {
+                dateTime = dateTime.add(const Duration(days: 1));
+              }
 
-            jsonStringPayload = jsonEncode(payload);
+              payload['formattedDate'] = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+              payload['groupedIds'] = groupedIds;
+              jsonStringPayload = jsonEncode(payload);
 
-            await weeklyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationTag);
+              await weeklyNotification(currentNotificationId, label, dateTime, jsonStringPayload);
 
           }
           }
           break;
         //Daily
         case 3:
+          /*
           if (dateTime.isBefore(now)) {
             dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day+1,
                 time.hour, time.minute);
@@ -506,35 +503,27 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
           formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
 
           payload = {
-            'notificationTag': notificationTag,
             'formattedDate': formattedDate,
             'description': getRepeatDescriptions(),
             'repeat': selectedRadio
           };
 
-          jsonStringPayload = jsonEncode(payload);
+          jsonStringPayload = jsonEncode(payload);*/
 
-          await dailyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationTag);
+          await dailyNotification(notificationId, label, dateTime, jsonStringPayload);
           break;
         //Yearly
         case 4:
+          /*
           if (dateTime.isBefore(now)) {
             dateTime = DateTime(_selectedDate.year+1, _selectedDate.month, _selectedDate.day,
                 time.hour, time.minute);
           }
 
-          formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+          payload['formattedDate'] = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+          jsonStringPayload = jsonEncode(payload);*/
 
-          payload = {
-            'notificationTag': notificationTag,
-            'formattedDate': formattedDate,
-            'description': getRepeatDescriptions(),
-            'repeat': selectedRadio
-          };
-
-          jsonStringPayload = jsonEncode(payload);
-
-          await yearlyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationTag);
+          await yearlyNotification(notificationId, label, dateTime, jsonStringPayload);
       }
     }
   }

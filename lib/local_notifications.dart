@@ -21,22 +21,20 @@ initializeNotifications() async {
   currentTimezone = await FlutterTimezone.getLocalTimezone();
 }
 
+var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+  'PopUp','PopUp',
+  importance: Importance.max,
+  priority: Priority.high,
+  playSound: true,
+);
 
 
 Future<void> onceNotification(
     int notificationId,
     String title,
     DateTime dateTime,
-    String? payload,
-    String? tag,) async {
+    String? payload) async {
 
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'PopUp','PopUp',
-    importance: Importance.max,
-    priority: Priority.high,
-    playSound: true,
-    tag: tag
-  );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
   );
@@ -58,16 +56,8 @@ Future<void> dailyNotification(
     int notificationId,
     String title,
     DateTime dateTime,
-    String? payload,
-    String? tag,) async {
+    String? payload) async {
 
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'PopUp','PopUp',
-      importance: Importance.max,
-      priority: Priority.high,
-      playSound: true,
-      tag: tag
-  );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
   );
@@ -91,16 +81,8 @@ Future<void> weeklyNotification(
     int notificationId,
     String title,
     DateTime dateTime,
-    String? payload,
-    String? tag,) async {
+    String? payload) async {
 
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'PopUp','PopUp',
-      importance: Importance.max,
-      priority: Priority.high,
-      playSound: true,
-      tag: tag
-  );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
   );
@@ -124,16 +106,8 @@ Future<void> yearlyNotification(
     int notificationId,
     String title,
     DateTime dateTime,
-    String? payload,
-    String? tag,) async {
+    String? payload) async {
 
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'PopUp','PopUp',
-      importance: Importance.max,
-      priority: Priority.high,
-      playSound: true,
-      tag: tag
-  );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
   );
