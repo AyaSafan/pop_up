@@ -24,10 +24,9 @@ class _NotificationCardState extends State<NotificationCard> {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15),),
-      margin: const EdgeInsets.symmetric(vertical: 6),
       decoration:  BoxDecoration(
         color: Colors.grey.shade100,
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        //borderRadius: const BorderRadius.all(Radius.circular(10)),
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,

@@ -223,13 +223,58 @@ class _MyHomePageState extends State<MyHomePage> {
                     //TODO: remove listview scroll color
                     Expanded(
                       child: ListView.builder(
-                        padding: EdgeInsets.zero, // Set padding to zero
+                        padding: EdgeInsets.zero,
                         itemCount: _selectedNotifications.length,
                         itemBuilder: (BuildContext context, int index) {
                           final notification = _selectedNotifications[index];
-                          return NotificationCard( notification: notification,);
+                          return Container(
+                            margin: const EdgeInsets.symmetric(vertical: 6),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(Radius.circular(10)),
+                              child: Dismissible(
+                                key: UniqueKey(),
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  alignment: AlignmentDirectional.centerEnd,
+                                  color: Colors.red,
+
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                onDismissed: (direction) {
+                                  // Remove the item from the list and update the UI
+                                  setState(() {
+                                    _selectedNotifications.removeAt(index);
+                                  });
+
+                                  // Show a snackbar with the delete action
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text('Pop up deleted'),
+                                      action: SnackBarAction(
+                                        label: 'Undo',
+                                        onPressed: () {
+                                          // Undo the delete action
+                                          setState(() {
+                                            _selectedNotifications.insert(index, notification);
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: NotificationCard(notification: notification),
+                              ),
+                            ),
+                          );
                         },
-                      ),
+                      )
+                      ,
                     )
                   ],
                 )
