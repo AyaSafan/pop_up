@@ -64,7 +64,7 @@ class _NotificationCardState extends State<NotificationCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.notification.title!, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),),
+                  Text(widget.notification.body!, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),),
                   const SizedBox(height: 4,),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,

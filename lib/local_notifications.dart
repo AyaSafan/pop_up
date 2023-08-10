@@ -45,7 +45,7 @@ Future<void> onceNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, title, null, tzDateTime, platformChannelSpecifics,
+      notificationId, null, title, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -76,7 +76,7 @@ Future<void> dailyNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, title, null, tzDateTime, platformChannelSpecifics,
+      notificationId, null, title, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -109,7 +109,7 @@ Future<void> weeklyNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, title, null, tzDateTime, platformChannelSpecifics,
+      notificationId, null, title, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -142,7 +142,7 @@ Future<void> yearlyNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, title, null, tzDateTime, platformChannelSpecifics,
+      notificationId, null, title, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
