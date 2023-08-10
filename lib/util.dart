@@ -33,7 +33,7 @@ bool isSameDayAndMonth(DateTime dateTime1, DateTime dateTime2) {
 
 
 String formatTime(String formattedDate) {
-  DateTime dateTime = DateFormat('yyyy-MM-dd – kk:mm').parse(formattedDate);
+  DateTime dateTime = DateFormat('yyyy-MM-dd  HH:mm').parse(formattedDate);
   String formattedTime = DateFormat('hh:mm a').format(dateTime);
   return formattedTime;
 }

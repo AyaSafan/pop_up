@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _selectedNotifications = [];
     for (PendingNotificationRequest notification in _pendingNotifications){
       Map<String, dynamic> payload = jsonDecode(notification.payload!);
-      DateTime payloadDateTime = DateFormat('yyyy-MM-dd – kk:mm').parse(payload["formattedDate"]);
+      DateTime payloadDateTime = DateFormat('yyyy-MM-dd  HH:mm').parse(payload["formattedDate"]);
         switch(payload["repeat"]) {
         //Once
           case 1:

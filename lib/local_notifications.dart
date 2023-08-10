@@ -49,7 +49,7 @@ Future<void> onceNotification(
       uiLocalNotificationDateInterpretation:
       UILocalNotificationDateInterpretation.absoluteTime
   );
-  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
+  print('************  created notification ${DateFormat('yyyy-MM-dd  HH:mm').format(dateTime)} ');
 }
 
 Future<void> dailyNotification(
@@ -73,7 +73,7 @@ Future<void> dailyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time
   );
-  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
+  print('************  created notification ${DateFormat('yyyy-MM-dd  HH:mm').format(dateTime)} ');
 }
 
 
@@ -98,7 +98,7 @@ Future<void> weeklyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime
   );
-  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
+  print('************  created notification ${DateFormat('yyyy-MM-dd  HH:mm').format(dateTime)} ');
 
 }
 
@@ -123,7 +123,7 @@ Future<void> yearlyNotification(
       UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.dateAndTime
   );
-  print('************  created notification ${DateFormat('yyyy-MM-dd – kk:mm').format(dateTime)} ');
+  print('************  created notification ${DateFormat('yyyy-MM-dd  HH:mm').format(dateTime)} ');
 }
 
 

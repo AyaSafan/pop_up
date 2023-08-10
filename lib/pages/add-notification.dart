@@ -441,7 +441,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
       var dateTime = DateTime(_selectedDate.year, _selectedDate.month, _selectedDate.day,
           time.hour, time.minute);
 
-      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+      String formattedDate = DateFormat('yyyy-MM-dd  HH:mm').format(dateTime);
 
       Map<String, dynamic> payload = {
         'formattedDate': formattedDate,
@@ -483,7 +483,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                 dateTime = dateTime.add(const Duration(days: 1));
               }
 
-              payload['formattedDate'] = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+              payload['formattedDate'] = DateFormat('yyyy-MM-dd  HH:mm').format(dateTime);
               payload['groupedIds'] = groupedIds;
               jsonStringPayload = jsonEncode(payload);
 
@@ -500,7 +500,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                 time.hour, time.minute);
           }
 
-          formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+          formattedDate = DateFormat('yyyy-MM-dd  HH:mm').format(dateTime);
 
           payload = {
             'formattedDate': formattedDate,
@@ -520,7 +520,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                 time.hour, time.minute);
           }
 
-          payload['formattedDate'] = DateFormat('yyyy-MM-dd – kk:mm').format(dateTime);
+          payload['formattedDate'] = DateFormat('yyyy-MM-dd  HH:mm').format(dateTime);
           jsonStringPayload = jsonEncode(payload);*/
 
           await yearlyNotification(notificationId, label, dateTime, jsonStringPayload);
