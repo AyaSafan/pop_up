@@ -417,7 +417,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
         break;
       case 2:
         if (days.length == 7){
-          description = 'Everyday';
+          description = 'Daily';
         } else {
           description = 'Every ${getWeekdayNames(days)}';
         }
@@ -467,7 +467,14 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
           break;
         //Weekly
         case 2:
-          for (var day in days) {
+          if (days.length == 7){
+            //only push notification if date+time is after NOW
+            if (dateTime.isAfter(now)) {
+              await onceNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
+            }
+          }
+          else{
+            for (var day in days) {
             //Get next occurrence of day
             while (dateTime.weekday != day) {
               dateTime = dateTime.add(const Duration(days: 1));
@@ -486,6 +493,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
 
             await weeklyNotification(getUniqueId(), label, dateTime, jsonStringPayload, notificationGroupKey);
 
+          }
           }
           break;
         //Daily

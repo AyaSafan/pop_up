@@ -5,6 +5,7 @@ import 'package:pop_up/components/notification-card.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../components/date_card.dart';
+import '../local_notifications.dart';
 import '../main.dart';
 import '../size_config.dart';
 import '../theme.dart';
@@ -27,14 +28,17 @@ class _MyHomePageState extends State<MyHomePage> {
   List<PendingNotificationRequest> _pendingNotifications = [];
   List<PendingNotificationRequest> _selectedNotifications = [];
 
+  bool isUndoUsed = false;
+
+
   Future<void> getPendingNotificationRequests() async {
-    print('-------------Get Pending Notifications ------------------');
+    //print('-------------Get Pending Notifications ------------------');
     _pendingNotifications = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
   }
 
   void getSelectedNotificationRequests() {
 
-    print('********************* Get Selected Notifications *********************');
+    //print('********************* Get Selected Notifications *********************');
     _selectedNotifications = [];
     for (PendingNotificationRequest notification in _pendingNotifications){
       Map<String, dynamic> payload = jsonDecode(notification.payload!);
@@ -66,7 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
       }
 
     }
-
 
   @override
   void initState() {
@@ -256,6 +259,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       content: const Text('Pop up deleted'),
+                                      onVisible: () {
+                                        // Reset the isUndoUsed flag when the SnackBar becomes visible again
+                                        isUndoUsed = false;
+                                      },
                                       action: SnackBarAction(
                                         label: 'Undo',
                                         onPressed: () {
@@ -263,10 +270,21 @@ class _MyHomePageState extends State<MyHomePage> {
                                           setState(() {
                                             _selectedNotifications.insert(index, notification);
                                           });
+
+                                          isUndoUsed = true;
                                         },
                                       ),
                                     ),
-                                  );
+                                  ).closed.then((reason) async {
+                                    if (!isUndoUsed) {
+                                      //print('>>>>>>>>>> cancel Notification ');
+                                      await cancelNotification(notification.id);
+                                      setState(() {
+                                        getPendingNotificationRequests().then((value) => getSelectedNotificationRequests());
+                                      });
+                                    }
+                                  });
+
                                 },
                                 child: NotificationCard(notification: notification),
                               ),

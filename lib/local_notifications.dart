@@ -28,14 +28,14 @@ Future<void> onceNotification(
     String title,
     DateTime dateTime,
     String? payload,
-    String? groupKey,) async {
+    String? tag,) async {
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
     'PopUp','PopUp',
     importance: Importance.max,
     priority: Priority.high,
     playSound: true,
-    groupKey: groupKey,
+    tag: tag
   );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
@@ -59,14 +59,14 @@ Future<void> dailyNotification(
     String title,
     DateTime dateTime,
     String? payload,
-    String? groupKey,) async {
+    String? tag,) async {
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'PopUp','PopUp',
-    importance: Importance.max,
-    priority: Priority.high,
-    playSound: true,
-    groupKey: groupKey,
+      'PopUp','PopUp',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      tag: tag
   );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
@@ -92,14 +92,14 @@ Future<void> weeklyNotification(
     String title,
     DateTime dateTime,
     String? payload,
-    String? groupKey,) async {
+    String? tag,) async {
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'PopUp','PopUp',
-    importance: Importance.max,
-    priority: Priority.high,
-    playSound: true,
-    groupKey: groupKey,
+      'PopUp','PopUp',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      tag: tag
   );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
@@ -125,14 +125,14 @@ Future<void> yearlyNotification(
     String title,
     DateTime dateTime,
     String? payload,
-    String? groupKey,) async {
+    String? tag,) async {
 
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-    'PopUp','PopUp',
-    importance: Importance.max,
-    priority: Priority.high,
-    playSound: true,
-    groupKey: groupKey,
+      'PopUp','PopUp',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      tag: tag
   );
   var platformChannelSpecifics = NotificationDetails(
     android: androidPlatformChannelSpecifics,
