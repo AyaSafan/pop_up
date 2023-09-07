@@ -232,8 +232,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           final notification = _selectedNotifications[index];
                           return Container(
                             margin: const EdgeInsets.symmetric(vertical: 6),
+
                             child: ClipRRect(
-                              borderRadius: const BorderRadius.all(Radius.circular(10)),
+                              borderRadius: const BorderRadius.all(Radius.circular(8)),
                               child: Dismissible(
                                 key: UniqueKey(),
                                 direction: DismissDirection.endToStart,

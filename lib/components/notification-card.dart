@@ -24,18 +24,7 @@ class _NotificationCardState extends State<NotificationCard> {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15),),
-      decoration:  BoxDecoration(
-        color: Colors.grey.shade100,
-        //borderRadius: const BorderRadius.all(Radius.circular(10)),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 1.0,
-            offset: Offset(0, 1),
-          ),
-        ],
-      ),
-      //The IntrinsicHeight widget will ensure that all children of the Row 
+      //The IntrinsicHeight widget will ensure that all children of the Row
       // have the same height as the tallest child.
       child: IntrinsicHeight(
         child: Row(
@@ -55,7 +44,7 @@ class _NotificationCardState extends State<NotificationCard> {
             ),
             Container(
               width: 1, // Width of the vertical line
-              color: Colors.black26, 
+              color: Colors.black26,
               margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),// Color of the vertical line
             ),
             Padding(
