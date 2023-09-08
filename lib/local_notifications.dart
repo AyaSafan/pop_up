@@ -32,6 +32,7 @@ var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
 Future<void> onceNotification(
     int notificationId,
     String title,
+    String body,
     DateTime dateTime,
     String? payload) async {
 
@@ -43,7 +44,7 @@ Future<void> onceNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, null, title, tzDateTime, platformChannelSpecifics,
+      notificationId, title, body, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -55,6 +56,7 @@ Future<void> onceNotification(
 Future<void> dailyNotification(
     int notificationId,
     String title,
+    String body,
     DateTime dateTime,
     String? payload) async {
 
@@ -66,7 +68,7 @@ Future<void> dailyNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, null, title, tzDateTime, platformChannelSpecifics,
+      notificationId, title, body, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -80,6 +82,7 @@ Future<void> dailyNotification(
 Future<void> weeklyNotification(
     int notificationId,
     String title,
+    String body,
     DateTime dateTime,
     String? payload) async {
 
@@ -91,7 +94,7 @@ Future<void> weeklyNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, null, title, tzDateTime, platformChannelSpecifics,
+      notificationId, title, body, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:
@@ -105,6 +108,7 @@ Future<void> weeklyNotification(
 Future<void> yearlyNotification(
     int notificationId,
     String title,
+    String body,
     DateTime dateTime,
     String? payload) async {
 
@@ -116,7 +120,7 @@ Future<void> yearlyNotification(
       .add(const Duration(seconds: 1));
 
   flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId, null, title, tzDateTime, platformChannelSpecifics,
+      notificationId, title, body, tzDateTime, platformChannelSpecifics,
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       uiLocalNotificationDateInterpretation:

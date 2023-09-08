@@ -21,6 +21,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String label = '';
+  String note = '';
 
   final today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   List<TimeOfDay> times = [TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute + 1)];
@@ -143,6 +144,44 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
                       },
                       onSaved: (value){setState(() {
                         label = value!;
+                      });},
+                    ),
+                    const SizedBox(height: 16,),
+                    TextFormField(
+                      maxLines: 2,
+                      cursorColor: MyColors.black26 ,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color(0xFFf3f3f3),
+                        floatingLabelStyle: TextStyle(color: MyColors.black26),
+                        contentPadding: EdgeInsets.fromLTRB(15, 20, 30, 20),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderSide: BorderSide(color:Color(0xFFf3f3f3)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderSide: BorderSide(color: MyColors.black26),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderSide: BorderSide(color: MyColors.red),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          borderSide: BorderSide(color: MyColors.red),
+                        ),
+
+                        labelText: 'Note ...',
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a number';
+                        }
+                        return null;
+                      },
+                      onSaved: (value){setState(() {
+                        note = value!;
                       });},
                     ),
                     const SizedBox(height: 16,),
@@ -456,7 +495,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
         case 1:
           //only push notification if date+time is after NOW
           if (dateTime.isAfter(now)) {
-            await onceNotification(notificationId, label, dateTime, jsonStringPayload);
+            await onceNotification(notificationId, label, note, dateTime, jsonStringPayload);
           }
           break;
         //Weekly
@@ -464,7 +503,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
           if (days.length == 7){
             payload['repeat'] = 3;
             jsonStringPayload = jsonEncode(payload);
-            await dailyNotification(notificationId, label, dateTime, jsonStringPayload);
+            await dailyNotification(notificationId, label, note, dateTime, jsonStringPayload);
 
           }
           else{
@@ -487,7 +526,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
               payload['groupedIds'] = groupedIds;
               jsonStringPayload = jsonEncode(payload);
 
-              await weeklyNotification(currentNotificationId, label, dateTime, jsonStringPayload);
+              await weeklyNotification(currentNotificationId, label, note, dateTime, jsonStringPayload);
 
           }
           }
@@ -510,7 +549,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
 
           jsonStringPayload = jsonEncode(payload);*/
 
-          await dailyNotification(notificationId, label, dateTime, jsonStringPayload);
+          await dailyNotification(notificationId, label, note, dateTime, jsonStringPayload);
           break;
         //Yearly
         case 4:
@@ -523,7 +562,7 @@ class _AddNotificationPageState extends State<AddNotificationPage> {
           payload['formattedDate'] = DateFormat('yyyy-MM-dd  HH:mm').format(dateTime);
           jsonStringPayload = jsonEncode(payload);*/
 
-          await yearlyNotification(notificationId, label, dateTime, jsonStringPayload);
+          await yearlyNotification(notificationId, label, note, dateTime, jsonStringPayload);
       }
     }
   }
