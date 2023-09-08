@@ -26,10 +26,11 @@ class _NotificationCardState extends State<NotificationCard> {
       padding: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15),),
       //The IntrinsicHeight widget will ensure that all children of the Row
       // have the same height as the tallest child.
-      child: IntrinsicHeight(
-        child: Row(
-          children: [
-            Column(
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.only(right: getProportionateScreenWidth(12)),
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(formatTime(payload["formattedDate"]).split(' ')[0],
@@ -42,39 +43,59 @@ class _NotificationCardState extends State<NotificationCard> {
                 ),
               ],
             ),
-            Container(
-              width: 1, // Width of the vertical line
-              color: Colors.black26,
-              margin: EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(15)),// Color of the vertical line
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: getProportionateScreenHeight(12)),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.fromLTRB( getProportionateScreenWidth(12), getProportionateScreenHeight(12), 0, getProportionateScreenHeight(12)),
+              decoration: const BoxDecoration(
+                border: Border(
+                  left: BorderSide(
+                    color: Colors.black26,  // Choose your border color here
+                    width: 1.0,         // Choose your border width here
+                  ),
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.notification.body!, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),),
+                  Text(widget.notification.title!,
+                    style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.black87),
+                    softWrap: true,
+                    maxLines: 1, // Limit to 2 lines
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4,),
+                  widget.notification.body!.isEmpty? const SizedBox() :
+                  Text(
+                      widget.notification.body!,
+                      style: const TextStyle(fontWeight: FontWeight.w400, color: Colors.black54),
+                      softWrap: true,
+                      maxLines: 2, // Limit to 2 lines
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   const SizedBox(height: 4,),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.repeat,size: 16,color: Colors.black45, ),
+                      const Icon(Icons.repeat,size: 16,color: Colors.red, ),
                       const SizedBox(width: 2,),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width - getProportionateScreenWidth(200),
+                      Expanded(
                         child: Text(
                           payload["description"],
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Colors.black45),
+                          softWrap: true,
+                          maxLines: 2, // Limit to 2 lines
+                          overflow: TextOverflow.ellipsis,
+
                         ),
                       ),
                     ],
                   )
                 ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
